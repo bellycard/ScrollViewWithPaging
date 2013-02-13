@@ -62,8 +62,8 @@ static NSUInteger kNumberOfPages = 7;
     scrollView.scrollsToTop = NO;
     scrollView.delegate = self;
 	
-    pageControl.numberOfPages = kNumberOfPages;
-    pageControl.currentPage = 0;
+    self.pageControl.numberOfPages = kNumberOfPages;
+    self.pageControl.currentPage = 0;
 	
     // pages are created on demand
     // load the visible page
@@ -95,7 +95,7 @@ static NSUInteger kNumberOfPages = 7;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
-    // We don't want a "feedback loop" between the UIPageControl and the scroll delegate in
+    // We don't want a "feedback loop" between the UIself.pageControl and the scroll delegate in
     // which a scroll event generated from the user hitting the page control triggers updates from
     // the delegate method. We use a boolean to disable the delegate logic when the page control is used.
     if (pageControlUsed) {
@@ -106,7 +106,7 @@ static NSUInteger kNumberOfPages = 7;
     // Switch the indicator when more than 50% of the previous/next page is visible
     CGFloat pageWidth = scrollView.frame.size.width;
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    pageControl.currentPage = page;
+    self.pageControl.currentPage = page;
 	
     // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
     [self loadScrollViewWithPage:page - 1];
@@ -116,18 +116,18 @@ static NSUInteger kNumberOfPages = 7;
     // A possible optimization would be to unload the views+controllers which are no longer visible
 }
 
-// At the begin of scroll dragging, reset the boolean used when scrolls originate from the UIPageControl
+// At the begin of scroll dragging, reset the boolean used when scrolls originate from the UIself.pageControl
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     pageControlUsed = NO;
 }
 
-// At the end of scroll animation, reset the boolean used when scrolls originate from the UIPageControl
+// At the end of scroll animation, reset the boolean used when scrolls originate from the UIself.pageControl
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     pageControlUsed = NO;
 }
 
 - (IBAction)changePage:(id)sender {
-    int page = pageControl.currentPage;
+    int page = self.pageControl.currentPage;
 	
     // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
     [self loadScrollViewWithPage:page - 1];
@@ -140,7 +140,7 @@ static NSUInteger kNumberOfPages = 7;
     frame.origin.y = 0;
     [scrollView scrollRectToVisible:frame animated:YES];
     
-	// Set the boolean used when scrolls originate from the UIPageControl. See scrollViewDidScroll: above.
+	// Set the boolean used when scrolls originate from the UIself.pageControl. See scrollViewDidScroll: above.
     pageControlUsed = YES;
 }
 
@@ -168,7 +168,7 @@ static NSUInteger kNumberOfPages = 7;
 - (void)dealloc {
     [viewControllers release];
     [scrollView release];
-    [pageControl release];
+    [self.pageControl release];
     [super dealloc];
 }
 
