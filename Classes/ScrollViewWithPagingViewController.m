@@ -48,10 +48,7 @@ static NSUInteger kNumberOfPages = 2;
 	
     // a page is the width of the scroll view
     scrollView.pagingEnabled = YES;
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * kNumberOfPages, scrollView.frame.size.height);
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.scrollsToTop = NO;
+    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * kNumberOfPages, scrollView.contentSize.height);
     scrollView.delegate = self;
 	
     self.pageControl.numberOfPages = kNumberOfPages;
