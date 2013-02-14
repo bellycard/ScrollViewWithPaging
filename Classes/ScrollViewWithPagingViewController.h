@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface ScrollViewWithPagingViewController : UIViewController <UIScrollViewDelegate> {
+#import "BaseViewController.h"
+@interface ScrollViewWithPagingViewController : BaseViewController <UIScrollViewDelegate> {
 	UIScrollView *scrollView;
 	UIPageControl *pageControl;
     NSMutableArray *viewControllers;

@@ -8,8 +8,9 @@
 
 #import "ScrollViewWithPagingViewController.h"
 #import "MyViewController.h"
+#import "UIBarButtonItem+QuickCreation.h"
 
-static NSUInteger kNumberOfPages = 7;
+static NSUInteger kNumberOfPages = 2;
 
 @interface ScrollViewWithPagingViewController (PrivateMethods)
 
@@ -45,15 +46,6 @@ static NSUInteger kNumberOfPages = 7;
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	// view controllers are created lazily
-    // in the meantime, load the array with placeholders which will be replaced on demand
-    NSMutableArray *controllers = [[NSMutableArray alloc] init];
-    for (unsigned i = 0; i < kNumberOfPages; i++) {
-        [controllers addObject:[NSNull null]];
-    }
-    self.viewControllers = controllers;
-    [controllers release];
-	
     // a page is the width of the scroll view
     scrollView.pagingEnabled = YES;
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * kNumberOfPages, scrollView.frame.size.height);
@@ -70,6 +62,10 @@ static NSUInteger kNumberOfPages = 7;
     // load the page on either side to avoid flashes when the user starts scrolling
     [self loadScrollViewWithPage:0];
     [self loadScrollViewWithPage:1];
+    
+    // Create the back button
+    UIBarButtonItem *backButtonItem = [UIBarButtonItem backButtonWithNavigationController:self.navigationController shouldPopToRootViewController:YES];
+    [self.navigationItem setLeftBarButtonItem:backButtonItem];
 }
 
 - (void)loadScrollViewWithPage:(int)page {
@@ -77,11 +73,10 @@ static NSUInteger kNumberOfPages = 7;
     if (page >= kNumberOfPages) return;
 	
     // replace the placeholder if necessary
-    MyViewController *controller = [viewControllers objectAtIndex:page];
+    UIViewController *controller = [viewControllers objectAtIndex:page];
     if ((NSNull *)controller == [NSNull null]) {
-        controller = [[MyViewController alloc] initWithPageNumber:page];
+        controller = [[UIViewController alloc] init];
         [viewControllers replaceObjectAtIndex:page withObject:controller];
-        [controller release];
     }
 	
     // add the controller's view to the scroll view
@@ -151,25 +146,5 @@ static NSUInteger kNumberOfPages = 7;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 */
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
-    [viewControllers release];
-    [scrollView release];
-    [self.pageControl release];
-    [super dealloc];
-}
 
 @end
